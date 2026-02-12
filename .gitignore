@@ -1,0 +1,4 @@
+/.idea/
+/terraform-eks/
+/backend/target/
+/ecs-task-def.json

@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spring-react
+  template:
+    metadata:
+      labels:
+        app: spring-react
+    spec:
+      containers:
+      - name: backend
+        image: spring-boot-backend:latest
+        imagePullPolicy: Never # Use local built image in K3s
+        ports:
+        - containerPort: 8080
+      - name: frontend
+        image: react-frontend:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-react-service
+spec:
+  selector:
+    app: spring-react
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
